@@ -13,12 +13,13 @@ module.exports = {
 
 
 function index(req, res) {
-    Request.find({})
+    const organization = req.query.organization
+    Request.find({ organization: organization })
     .then(function(requests) {
-    res.json(requests);
+        res.json(requests);
     })
     .catch(function(err){
-    res.status(500).json({ error: true });
+        res.status(500).json({ error: true });
     });
 }
 
@@ -31,18 +32,46 @@ function show(req, res) {
         res.json(requests)
     })
 }
-// create account
-function create(req,res){
-    Request.create(req.body)
-    .then(function(newRequest){
-        res.json(newRequest)
-    }).catch(function(err){
+
+// function create(req,res){
+//     Request.create(req.body)
+//     .then(function(newRequest){
+//         res.json(newRequest)
+//     }).catch(function(err){
+//         if (err.name === 'ValidationError') {
+//             return res.status(400).json({ error: 'Invalid Inputs' });
+//         }
+//         res.status(500).json({ error: 'Could not create request' });
+//     })
+// }
+
+
+
+// create request under the user
+function create(req,res) {
+    var user = User.findById(req.params.id)
+    var newRequest = Request.create(req.body)
+    Promise.all([user,newRequest])
+    .then(function(results){
+        // console.log(newRequest.users)
+        console.log(results[0])
+        results[1].users.push(results[0])
+        results[1].save()
+        //console.log(results[0].requests)
+        results[0].requests.push(results[1])
+        // **Later need to redirect save to the request page
+        results[0].save()
+        return res.json(results[1]);
+    })
+    .catch(function(err){
         if (err.name === 'ValidationError') {
             return res.status(400).json({ error: 'Invalid Inputs' });
         }
         res.status(500).json({ error: 'Could not create request' });
     })
 }
+
+// Request.create(req.body).then(request => res.json(request))
 
 function update(req, res) {
     Request.findByIdAndUpdate(
@@ -112,3 +141,4 @@ function acceptRequest(req,res) {
         res.status(500).json({ error: 'Could not update request' });
     })
 }
+

@@ -11,3 +11,19 @@ HTTP Methods        CRUD        URL                     DESCRIPTION
 GET                 index       /api/requests           List all requests
 GET                 show        /api/requests/:id       See all requests by searching the user or organization
 POST                create      /api/requests/          Create new receipt and
+
+
+Request Input Example
+{
+	"pickUpTime": "Every Monday 9am",
+	"pickUpAddress": "110 Church Street",
+	"destinationAddress": "111 Church Street",
+	"seats": 1
+}
+
+{
+	"pickUpTime": "Every Tuesday 9am",
+	"pickUpAddress": "22 Church Street",
+	"destinationAddress": "222 Church Street",
+	"seats": 1
+}

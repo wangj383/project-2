@@ -4,12 +4,10 @@ const Request = require('../../models/request');
 module.exports = {
     index,
     show,
-    createAccount,
-    createRequest,
+    create,
     update,
-    delete: deleteUser
+    delete: deleteUser,
 };
-
 
 function index(req, res) {
     User.find({})
@@ -34,8 +32,9 @@ function show(req, res) {
         res.json(users)
     })
 }
+
 // create account
-function createAccount(req,res){
+function create(req,res){
     User.create(req.body)
     .then(function(newUser){
         res.json(newUser)
@@ -45,20 +44,6 @@ function createAccount(req,res){
             return res.status(400).json({ error: 'Invalid Inputs' });
         }
         res.status(500).json({ error: 'Could not create user' });
-    })
-}
-// create request under the user
-function createRequest(req,res) {
-    User.findById(req.params.id)
-    .then(function(user){
-        const newRequest = Request.create()
-        user.requests.push(newRequest.id)
-    })
-    .catch(function(err){
-        if (err.name === 'ValidationError') {
-            return res.status(400).json({ error: 'Invalid Inputs' });
-        }
-        res.status(500).json({ error: 'Could not create request' });
     })
 }
 
@@ -95,3 +80,4 @@ function deleteUser(req,res) {
         res.status(500).json({ error: 'Could not delete user' });
     })
 }
+

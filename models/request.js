@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 var requestSchema = new Schema({
+    user: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    organization: [{type: Schema.Types.ObjectId, ref: 'Organization'}],
     expired: {type: Boolean, default: false},
     accepted: {type: Boolean, default: false},
     canceled: {type: Boolean, default: false},

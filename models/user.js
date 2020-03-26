@@ -18,7 +18,7 @@ const userSchema = new Schema({
   email: {type: String, require: true},
   phoneNum: {type: String, require: true},
 //   ****NEED TO THINK ABOUT THIS!
-  requests: [{type: Schema.Types.ObjectId, ref: 'Request'}]
+  organization: [{type: Schema.Types.ObjectId, ref: 'Organization'}]
 }, {
   timestamps: true
 });
