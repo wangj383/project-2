@@ -8,28 +8,23 @@ module.exports = {
     update,
     delete: deleteUser,
 };
-
 function index(req, res) {
-    User.find({})
+    var organization = req.query.organization
+    User.find({organization: organization })
     .then(function(users) {
-    res.json(users);
+        res.json(users);
     })
     .catch(function(err){
-    res.status(500).json({ error: true });
+        res.status(500).json({ error: true });
     });
 }
+
 
 // show selective user info
 function show(req, res) {
     User.findById(req.params.id)
-    .populate({
-        path: 'requests',
-        model: "Request",
-        populate: "users"
-    })
-    // look up nested populate 
-    .then(function(users){
-        res.json(users)
+    .then(function(user){
+        res.json(user)
     })
 }
 

@@ -11,57 +11,35 @@ module.exports = {
     acceptRequest,
 };
 
-
+// show all requests for that organizations
+// later need to see how to select driver requests and user request in two different tabs on the website
 function index(req, res) {
     const organization = req.query.organization
-    Request.find({ organization: organization })
-    .then(function(requests) {
+    Request.find({organization: organization})
+    .populate('user')
+    .then(function(requests){
         res.json(requests);
     })
     .catch(function(err){
         res.status(500).json({ error: true });
-    });
+    })
 }
 
 // show selective request info
 function show(req, res) {
     Request.findById(req.params.id)
-    .populate(requests)
-    // look up nested populate 
+    .populate(user)
     .then(function(requests){
         res.json(requests)
     })
 }
 
-// function create(req,res){
-//     Request.create(req.body)
-//     .then(function(newRequest){
-//         res.json(newRequest)
-//     }).catch(function(err){
-//         if (err.name === 'ValidationError') {
-//             return res.status(400).json({ error: 'Invalid Inputs' });
-//         }
-//         res.status(500).json({ error: 'Could not create request' });
-//     })
-// }
-
-
-
 // create request under the user
-function create(req,res) {
-    var user = User.findById(req.params.id)
-    var newRequest = Request.create(req.body)
-    Promise.all([user,newRequest])
-    .then(function(results){
-        // console.log(newRequest.users)
-        console.log(results[0])
-        results[1].users.push(results[0])
-        results[1].save()
-        //console.log(results[0].requests)
-        results[0].requests.push(results[1])
-        // **Later need to redirect save to the request page
-        results[0].save()
-        return res.json(results[1]);
+
+function create(req,res){
+    Request.create(req.body)
+    .then(function(request){
+        res.json(request)
     })
     .catch(function(err){
         if (err.name === 'ValidationError') {
@@ -71,13 +49,11 @@ function create(req,res) {
     })
 }
 
-// Request.create(req.body).then(request => res.json(request))
-
 function update(req, res) {
     Request.findByIdAndUpdate(
         req.params.id, 
         req.body, 
-        { new: true }
+        {new: true}
     )
     .then(function(requests) {
         res.status(200).json(requests);
@@ -105,8 +81,6 @@ function deleteRequest(req,res) {
         res.status(500).json({ error: 'Could not delete request' });
     })
 }
-
-
 
 function cancelRequest(req,res) {
     Request.findByIdAndUpdate(

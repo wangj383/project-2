@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <title>API Documentation</title>
+</head>
+<body>
+    <h1>API Documentation</h1>
+    <article>
+        <h2>Data Models</h2>
+    </article>
+    <article>
+        <h2>User Stories</h2>
+        <h3>Organizations</h3>
+        <h3>Users</h3>
+        <h3>Requests</h3>
+    </article>
+
+    <article>
+        <h2>Restful Routes</h2>
+        <h3>Organizations</h3>
+            <table class="table table-hover table-bordered">
+            <thead> 
+                <tr class="something">
+                    <th>Name</th>
+                    <th>Path</th>
+                    <th>HTTP Verb</th>
+                    <th>Purpose</th>
+                    <th>Mongoose Method</th>
+                    <th>Future Todo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="something">
+                    <td>Index</td>
+                    <td>/api/organization</td>
+                    <td>GET</td>
+                    <td>List all organizations</td>
+                    <td>Organization.find()</td>
+                    <td>None</td>
+                </tr>
+                <tr class="success">
+                    <td>Create</td>
+                    <td>/api/organization</td>
+                    <td>POST</td>
+                    <td>Create a new organization</td>
+                    <td>Organization.create()</td>
+                    <td>Make sure to direct to the log in page</td>
+                </tr>
+                <tr class="info">
+                    <td>Show</td>
+                    <td>/api/organization/:id</td>
+                    <td>GET</td>
+                    <td>Show info about one specific organization</td>
+                    <td>Dog.findById()</td>
+                </tr>
+                <tr class="warning">
+                    <td>Edit</td>
+                    <td>/dogs/:id/edit</td>
+                    <td>GET</td>
+                    <td>Show edit form for one dog</td>
+                    <td>Dog.findById()</td>
+                </tr>
+                <tr class="warning">
+                    <td>Update</td>
+                    <td>/dogs/:id</td>
+                    <td>PUT</td>
+                    <td>Update particular dog, then redirect somewhere</td>
+                    <td>Dog.findByIdAndUpdate()</td>
+                </tr>
+                <tr class="danger">
+                    <td>Delete</td>
+                    <td>/dogs/:id</td>
+                    <td>DELETE</td>
+                    <td>Delete a particular dog, then redirect somewhere</td>
+                    <td>Dog.findByIdAndRemove()</td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <article>
+        <h3>Users</h3>
+
+    </article>
+    <article>
+        <h3>Requests</h3>
+    </article>
+
+</body>
+</html>

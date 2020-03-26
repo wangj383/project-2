@@ -11,6 +11,7 @@ var app = express();
 require('./config/database');
 
 var indexRouter = require('./routes/index');
+var apiIndexRouter = require('./routes/api/index');
 var usersRouter = require('./routes/api/users');
 var organizationsRouter = require('./routes/api/organizations')
 var requestsRouter = require('./routes/api/requests')
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/api/', apiIndexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/organizations',organizationsRouter);
 app.use('/api/requests',requestsRouter);

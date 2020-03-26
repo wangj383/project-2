@@ -12,13 +12,14 @@ const carSchema = new Schema({
   });
   
 const userSchema = new Schema({
+  organization: [{type: Schema.Types.ObjectId, ref: 'Organization'}],
   name: {type: String, require: true},
   driver: {type: Boolean, require: true},
   car: [carSchema],
   email: {type: String, require: true},
   phoneNum: {type: String, require: true},
+  notes: {type: String}
 //   ****NEED TO THINK ABOUT THIS!
-  organization: [{type: Schema.Types.ObjectId, ref: 'Organization'}]
 }, {
   timestamps: true
 });

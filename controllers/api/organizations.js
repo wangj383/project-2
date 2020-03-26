@@ -7,38 +7,35 @@ module.exports = {
     show,
     create,
     update,
-    delete:deleteRequest
+    delete:deleteOrganization
 };
 
 function index(req, res) {
     Organization.find({})
     .then(function(organizations) {
-    res.json(organizations);
+        res.json(organizations);
     })
     .catch(function(err){
-    res.status(500).json({ error: true });
+        res.status(500).json({ error: true });
     });
 }
 
 // Show all info in the searched organization
 // show all the users(including their requests) and requests(including the users related to the requests) within the organization.
 function show(req, res) {
-    Organization.findById(req.params.id)
-    .populate({
-        path: 'users',
-        model: "User",
-        populate: "requests"
+    var organization = Organization.findById(req.params.id);
+    var users = User.find({organization: organization.id});
+    var requests = Request.find({organization: organization.id});
+
+    Promise.all([organization,users,requests])
+    .then(function(results){
+        return res.json(results)
     })
-    .populate({
-        path: 'requests',
-        model: "Request",
-        populate: "users"
-    })
-    // look up nested populate 
-    .then(function(organization){
-        res.json(organization)
-    })
+    .catch(function(err){
+        res.status(500).json({ error: true });
+    })        
 }
+
 
 // Create an organization
 function create(req,res){
@@ -72,7 +69,7 @@ function update(req, res) {
     })
 }
 
-function deleteRequest(req,res) {
+function deleteOrganization(req,res) {
     Organization.findByIdAndDelete(
         req.params.id,
         req.body,
