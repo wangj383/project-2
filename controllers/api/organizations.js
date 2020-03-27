@@ -33,13 +33,10 @@ function index(req, res) {
 //     })        
 // }
 
-
 function show(req, res) {
     let organization=Organization.findById(req.params.id)
-   
-    let users=User.find(organization=req.params.id)
-    console.log(users)
-    let requests=Request.find(organization=req.params.id)
+    let users=User.find({organization: req.params.id})
+    let requests=Request.find({organization: req.params.id})
     Promise.all([organization,users,requests])
     .then(function(results){
         return res.json(results)
