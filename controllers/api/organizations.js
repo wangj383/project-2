@@ -40,7 +40,7 @@ function show(req, res) {
     let users=User.find(organization=req.params.id)
     console.log(users)
     let requests=Request.find(organization=req.params.id)
-    Organization.findById(req.params.id)
+    Promise.all([organization,users,requests])
     .then(function(results){
         return res.json(results)
     })
