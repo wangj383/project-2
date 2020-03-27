@@ -24,7 +24,10 @@ function index(req, res) {
 
 // Show all info in the searched organization
 function show(req, res) {
-    Organization.findById(req.params.id)
+    let organization=Organization.findById(req.params.id)
+    let users=User.find({organization=req.params.id})
+    let requests=Request.find({organization=req.params.id})
+    Promise.all([organization,users,requests])
     .then(function(results){
         return res.json(results)
     })

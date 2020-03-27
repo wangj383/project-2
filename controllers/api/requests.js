@@ -19,6 +19,9 @@ function index(req, res) {
     const organization = req.query.organization
     Request.find({organization: organization})
     .populate('user')
+    .populate('acceptedUser')
+    .populate('canceledUser')
+    .populate('confirmedUser')
     .then(function(requests){
         res.json(requests);
     })
@@ -30,7 +33,10 @@ function index(req, res) {
 // show selective request info
 function show(req, res) {
     Request.findById(req.params.id)
-    .populate(user)
+    .populate('user')
+    .populate('acceptedUser')
+    .populate('canceledUser')
+    .populate('confirmedUser')
     .then(function(requests){
         res.json(requests)
     })
@@ -72,6 +78,9 @@ function update(req, res) {
         {new: true}
     )
     .populate('user')
+    .populate('acceptedUser')
+    .populate('canceledUser')
+    .populate('confirmedUser')
     .then(function(requests) {
         res.status(200).json(requests);
     })

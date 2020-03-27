@@ -93,6 +93,9 @@ function deleteUser(req,res) {
 function requestHistory(req,res) {
     Request.find({user: req.params.id})
     .populate('user')
+    .populate('acceptedUser')
+    .populate('canceledUser')
+    .populate('confirmedUser')
     .then(function(requests) {
         res.status(200).json(requests);
     })
