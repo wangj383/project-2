@@ -14,6 +14,7 @@ const carSchema = new Schema({
 const userSchema = new Schema({
   organization: [{type: Schema.Types.ObjectId, ref: 'Organization'}],
   name: {type: String, require: true},
+  gender: {type: String},
   driver: {type: Boolean, require: true},
   car: [carSchema],
   email: {type: String, require: true},

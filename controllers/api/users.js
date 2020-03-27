@@ -4,11 +4,15 @@ const Request = require('../../models/request');
 module.exports = {
     index,
     show,
+    new: newUser,
     create,
+    edit,
     update,
     delete: deleteUser,
+    requestHistory
 };
 function index(req, res) {
+    // This next line will be changed after oAuth is added
     var organization = req.query.organization
     User.find({organization: organization })
     .then(function(users) {
@@ -19,7 +23,6 @@ function index(req, res) {
     });
 }
 
-
 // show selective user info
 function show(req, res) {
     User.findById(req.params.id)
@@ -27,9 +30,15 @@ function show(req, res) {
         res.json(user)
     })
 }
+// Have not yet design the new.ejs
+function newUser(req,res) {
+    // res.render('users/new')
+}
 
 // create account
-function create(req,res){
+function create(req,res) {
+    // This next line will be changed after oAuth is added
+    req.body.organization = req.query.organization
     User.create(req.body)
     .then(function(newUser){
         res.json(newUser)
@@ -40,6 +49,11 @@ function create(req,res){
         }
         res.status(500).json({ error: 'Could not create user' });
     })
+}
+
+function edit(req,res){
+    // let user= User.findById(req.params.id)
+    // res.render('users/edit, user')
 }
 
 function update(req, res) {
@@ -61,7 +75,7 @@ function update(req, res) {
 
 // Should later design to only be able to delete personal info 
 function deleteUser(req,res) {
-    User.findByIdAndDelete(
+    User.findByIdAndRemove(
         req.params.id,
         req.body,
     )
@@ -70,7 +84,20 @@ function deleteUser(req,res) {
     })
     .catch(function(err){
         if (err.name === 'ValidationError') {
-            return res.status(400).json({ error: 'Invalid Inputs' });
+            return res.status(400).json({ error: 'Invalid User ID' });
+        }
+        res.status(500).json({ error: 'Could not delete user' });
+    })
+}
+
+function requestHistory(req,res) {
+    Request.find({user: req.params.id})
+    .then(function(requests) {
+        res.status(200).json(requests);
+    })
+    .catch(function(err){
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ error: 'Invalid User ID' });
         }
         res.status(500).json({ error: 'Could not delete user' });
     })

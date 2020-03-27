@@ -4,11 +4,13 @@ const User = require('../../models/user');
 module.exports = {
     index,
     show,
+    new: newRequest,
     create,
+    edit,
     update,
     delete: deleteRequest,
-    cancelRequest,
-    acceptRequest,
+    // cancelRequest,
+    // acceptRequest,
 };
 
 // show all requests for that organizations
@@ -34,9 +36,17 @@ function show(req, res) {
     })
 }
 
+
+function newRequest(req,res){
+    res.render('requests/new')
+}
 // create request under the user
 
 function create(req,res){
+    // This next line will be changed after oAuth is added
+    req.body.user = req.query.user
+    // This next line will be changed after oAuth is added
+    req.body.organization = req.query.organization
     Request.create(req.body)
     .then(function(request){
         res.json(request)
@@ -49,12 +59,19 @@ function create(req,res){
     })
 }
 
+
+function edit(req,res){
+    // let request= Request.findById(req.params.id)
+    // res.render('requests/edit, request')
+}
+
 function update(req, res) {
     Request.findByIdAndUpdate(
         req.params.id, 
         req.body, 
         {new: true}
     )
+    .populate('user')
     .then(function(requests) {
         res.status(200).json(requests);
     })
@@ -67,7 +84,7 @@ function update(req, res) {
 }
 
 function deleteRequest(req,res) {
-    Request.findByIdAndDelete(
+    Request.findByIdAndRemove(
         req.params.id,
         req.body,
     )
@@ -76,43 +93,45 @@ function deleteRequest(req,res) {
     })
     .catch(function(err){
         if (err.name === 'ValidationError') {
-            return res.status(400).json({ error: 'Invalid Inputs' });
+            return res.status(400).json({ error: 'Invalid Request ID' });
         }
         res.status(500).json({ error: 'Could not delete request' });
     })
 }
 
-function cancelRequest(req,res) {
-    Request.findByIdAndUpdate(
-        req.params.id, 
-        {canceled: true}, 
-        { new: true }
-    )
-    .then(function(requests) {
-        res.status(200).json(requests);
-    })
-    .catch(function(err){
-        if (err.name === 'ValidationError') {
-            return res.status(400).json({ error: 'Invalid Inputs' });
-        }
-        res.status(500).json({ error: 'Could not update request' });
-    })
-}
+// Incomplete, may not needed
 
-function acceptRequest(req,res) {
-    Request.findByIdAndDelete(
-        req.params.id,
-        {accepted: true}, 
-        { new: true }
-    )
-    .then(function(requests) {
-        res.status(200).json(requests);
-    })
-    .catch(function(err){
-        if (err.name === 'ValidationError') {
-            return res.status(400).json({ error: 'Invalid Inputs' });
-        }
-        res.status(500).json({ error: 'Could not update request' });
-    })
-}
+// function cancelRequest(req,res) {
+//     Request.findByIdAndUpdate(
+//         req.params.id, 
+//         {canceled: true}, 
+//         { new: true }
+//     )
+//     .then(function(requests) {
+//         res.status(200).json(requests);
+//     })
+//     .catch(function(err){
+//         if (err.name === 'ValidationError') {
+//             return res.status(400).json({ error: 'Invalid Inputs' });
+//         }
+//         res.status(500).json({ error: 'Could not update request' });
+//     })
+// }
+
+// function acceptRequest(req,res) {
+//     Request.findByIdAndDelete(
+//         req.params.id,
+//         {accepted: true}, 
+//         { new: true }
+//     )
+//     .then(function(requests) {
+//         res.status(200).json(requests);
+//     })
+//     .catch(function(err){
+//         if (err.name === 'ValidationError') {
+//             return res.status(400).json({ error: 'Invalid Inputs' });
+//         }
+//         res.status(500).json({ error: 'Could not update request' });
+//     })
+// }
 

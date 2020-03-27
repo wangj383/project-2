@@ -5,9 +5,11 @@ const User = require('../../models/user');
 module.exports = {
     index,
     show,
+    new: newOrganization,
     create,
+    edit,
     update,
-    delete:deleteOrganization
+    delete: deleteOrganization
 };
 
 function index(req, res) {
@@ -21,13 +23,8 @@ function index(req, res) {
 }
 
 // Show all info in the searched organization
-// show all the users(including their requests) and requests(including the users related to the requests) within the organization.
 function show(req, res) {
-    var organization = Organization.findById(req.params.id);
-    var users = User.find({organization: organization.id});
-    var requests = Request.find({organization: organization.id});
-
-    Promise.all([organization,users,requests])
+    Organization.findById(req.params.id)
     .then(function(results){
         return res.json(results)
     })
@@ -36,6 +33,10 @@ function show(req, res) {
     })        
 }
 
+// Have not yet design the new.ejs
+function newOrganization(req,res){
+    // res.render('organizations/new')
+}
 
 // Create an organization
 function create(req,res){
@@ -50,8 +51,12 @@ function create(req,res){
     })
 }
 
-// Update organization information.
+function edit(req,res){
+    // let organization = Organization.findById(req.params.id)
+    // res.render('organizations/edit, organization')
+}
 
+// Update organization information
 function update(req, res) {
     Organization.findByIdAndUpdate(
         req.params.id, 
@@ -70,7 +75,7 @@ function update(req, res) {
 }
 
 function deleteOrganization(req,res) {
-    Organization.findByIdAndDelete(
+    Organization.findByIdAndRemove(
         req.params.id,
         req.body,
     )
@@ -79,7 +84,7 @@ function deleteOrganization(req,res) {
     })
     .catch(function(err){
         if (err.name === 'ValidationError') {
-            return res.status(400).json({ error: 'Invalid Inputs' });
+            return res.status(400).json({ error: 'Invalid Organization ID' });
         }
         res.status(500).json({ error: 'Could not delete organization' });
     })
