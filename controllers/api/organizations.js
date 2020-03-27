@@ -23,7 +23,23 @@ function index(req, res) {
 }
 
 // Show all info in the searched organization
+// function show(req, res) {
+//     Organization.findById(req.params.id)
+//     .then(function(results){
+//         return res.json(results)
+//     })
+//     .catch(function(err){
+//         res.status(500).json({ error: true });
+//     })        
+// }
+
+
 function show(req, res) {
+    let organization=Organization.findById(req.params.id)
+   
+    let users=User.find(organization=req.params.id)
+    console.log(users)
+    let requests=Request.find(organization=req.params.id)
     Organization.findById(req.params.id)
     .then(function(results){
         return res.json(results)
@@ -32,10 +48,6 @@ function show(req, res) {
         res.status(500).json({ error: true });
     })        
 }
-
-// let organization=Organization.findById(req.params.id)
-// let users=User.find({organization=req.params.id})
-// let requests=Request.find({organization=req.params.id})
 
 // Have not yet design the new.ejs
 function newOrganization(req,res){
